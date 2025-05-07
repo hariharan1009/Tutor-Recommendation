@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY }); // Ensure GROQ_API_KEY is in your .env.local
 
+
 export async function POST(request: Request) {
   try {
     const { query } = await request.json();
@@ -11,7 +12,7 @@ export async function POST(request: Request) {
 
     const response = await groq.chat.completions.create({
       messages: [
-        {
+        {  
           role: 'user',
           content: `Recommend online tutors based on the following criteria: ${query}. Provide the tutor's name, subject they teach, years of experience, and average rating. **Return ONLY a valid JSON array of tutor objects. Each object should have the keys: "name", "subject", "experience", and "rating" (as strings or numbers as appropriate). Do not include any introductory or concluding text.**`,        },
       ],
