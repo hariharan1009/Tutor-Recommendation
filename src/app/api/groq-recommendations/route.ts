@@ -35,4 +35,31 @@ export async function POST(request: Request) {
     console.error('API Route - Error fetching from Groq:', error);
     return NextResponse.json({ error: 'Failed to fetch from Groq' }, { status: 500 });
   }
+  async function fetchRecommendations() {
+    try {
+      const res = await fetch("http://localhost:5000/api/recommendations");
+  
+      console.log("Response status:", res.status);
+  
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Error response text:", errorText);
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+  
+      const data = await res.json();
+      console.log("Received data:", data);
+  
+      // Optional: validate structure
+      if (!Array.isArray(data.recommendations)) {
+        throw new Error("Invalid response format: expected 'recommendations' array.");
+      }
+  
+      return data.recommendations;
+    } catch (error) {
+      console.error("Error in fetchRecommendations:", error);
+      throw new Error("Failed to process tutor recommendations.");
+    }
+  }
+  
 }
